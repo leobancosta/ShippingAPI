@@ -1,5 +1,3 @@
-# Mynt Java Practical Exam - Leonardo V. Bancosta, Jr.
-
 A Rest API Application built with Spring Boot 2.3.5
 
 Tech Stack
