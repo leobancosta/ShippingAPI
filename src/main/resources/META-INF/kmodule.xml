@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
+    <kbase name="shipping-rules" packages="rules.shipping">
+        <ksession name="ksession-shipping-rules"/>
+    </kbase>
+    <kbase name="voucher-rules" packages="rules.voucher">
+        <ksession name="ksession-voucher-rules"/>
+    </kbase>
+</kmodule>
+	

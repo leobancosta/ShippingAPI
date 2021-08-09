@@ -1,0 +1,48 @@
+package rules.shipping;
+
+import com.mynt.exam.web.dto.ShippingDetailsDTO;
+import com.mynt.exam.constants.ShippingRule;
+import java.math.BigDecimal;
+	
+global com.mynt.exam.web.dto.ShippingCostDTO shippingCostDTO;
+
+rule "rejectParcel"
+	when
+		shippingDTO:ShippingDetailsDTO(weight > 50);
+	then
+		shippingCostDTO.setShippingFee(0);
+		shippingCostDTO.setRuleName(ShippingRule.REJECTED_PARCEL.name());
+		shippingCostDTO.setShippingStatus("Parcel rejected. Weight exceeded 50kg limit");
+end
+
+rule "heavyParcel"
+	when
+		shippingDTO:ShippingDetailsDTO(weight > 10 && weight < 50);
+	then
+		shippingCostDTO.setShippingFee((float)(shippingDTO.getWeight() * 20));
+		shippingCostDTO.setRuleName(ShippingRule.HEAVY_PARCEL.name());
+ end
+ 
+ rule "smallParcel"
+ 	when
+ 		shippingDTO:ShippingDetailsDTO((height * width * length) < 1500 && weight < 10);
+ 	then
+ 		shippingCostDTO.setShippingFee((float)((shippingDTO.getHeight() * shippingDTO.getWidth() * shippingDTO.getLength()) * 0.03));
+ 		shippingCostDTO.setRuleName(ShippingRule.SMALL_PARCEL.name());
+end
+
+rule "mediumParcel"
+	when
+		shippingDTO:ShippingDetailsDTO((height * width * length) > 1500 && (height * width * length) < 2500 && weight < 10);
+	then
+		shippingCostDTO.setShippingFee((float)((shippingDTO.getHeight() * shippingDTO.getWidth() * shippingDTO.getLength()) * 0.04));
+		shippingCostDTO.setRuleName(ShippingRule.MEDIUM_PARCEL.name());
+end
+
+rule "largeParcel"
+	when
+		shippingDTO:ShippingDetailsDTO((height * width * length) > 2500 && weight < 10);
+	then
+		shippingCostDTO.setShippingFee((float)((shippingDTO.getHeight() * shippingDTO.getWidth() * shippingDTO.getLength()) * 0.05));
+		shippingCostDTO.setRuleName(ShippingRule.LARGE_PARCEL.name());
+end

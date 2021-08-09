@@ -1,0 +1,28 @@
+package rules.voucher;
+
+import com.mynt.exam.web.dto.VoucherItemDTO;
+import com.mynt.exam.constants.VoucherStatus;
+import java.math.RoundingMode;
+
+global com.mynt.exam.util.ShippingServiceUtil util;
+
+rule "voucher-redeemable"
+	when
+		voucherDTO : VoucherItemDTO (discount > 0 && expiry > util.getCurrentDate());
+	then
+		voucherDTO.setVoucherStatus(VoucherStatus.VOUCHER_ACTIVE.name());
+end
+
+rule "voucher-expired"
+	when
+		voucherDTO : VoucherItemDTO (discount > 0 && expiry < util.getCurrentDate());
+	then
+		voucherDTO.setVoucherStatus(VoucherStatus.VOUCHER_EXPIRED.name());
+end
+
+rule "voucher-invalid"
+	when
+		voucherDTO : VoucherItemDTO (discount < 1);
+	then
+		voucherDTO.setVoucherStatus(VoucherStatus.VOUCHER_INVALID.name());
+end
